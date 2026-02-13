@@ -14,24 +14,43 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Locate project folder
+        shell: pwsh
         run: |
-          cd Scorecardgenerator
+          if (Test-Path ".\generate_scorecard.py") {
+            "PROJECT_DIR=." | Out-File -FilePath $env:GITHUB_ENV -Append
+          } elseif (Test-Path ".\Scorecardgenerator\generate_scorecard.py") {
+            "PROJECT_DIR=Scorecardgenerator" | Out-File -FilePath $env:GITHUB_ENV -Append
+          } else {
+            Write-Host "Could not find generate_scorecard.py. Listing files:"
+            Get-ChildItem -Recurse -Depth 4
+            exit 1
+          }
+
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          Set-Location $env:PROJECT_DIR
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
 
       - name: Build EXE
+        shell: pwsh
         run: |
-          cd Scorecardgenerator
-          pyinstaller --onefile --name Scorecardgenerator generate_scorecard.py
+          Set-Location $env:PROJECT_DIR
+          pyinstaller --onefile --name Scorecardgenerator `
+            --collect-all pandas `
+            --collect-all openpyxl `
+            --collect-all reportlab `
+            generate_scorecard.py
 
       - name: Create deploy folder
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path deploy | Out-Null
-          Copy-Item Scorecardgenerator\dist\Scorecardgenerator.exe deploy\
-          Copy-Item Scorecardgenerator\config.json deploy\
+          Copy-Item "$env:PROJECT_DIR\dist\Scorecardgenerator.exe" deploy\
+          Copy-Item "$env:PROJECT_DIR\config.json" deploy\
           New-Item -ItemType Directory -Force -Path deploy\inputs\monthly | Out-Null
           New-Item -ItemType Directory -Force -Path deploy\inputs\ytd | Out-Null
           New-Item -ItemType Directory -Force -Path deploy\outputs | Out-Null
