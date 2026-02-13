@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -25,6 +26,18 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 
 MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+
+def get_base_dir() -> Path:
+    """Return the project directory.
+
+    When packaged with PyInstaller (especially --onefile), __file__ points into a temporary
+    _MEI folder. We want the folder where the executable lives so config.json and the
+    inputs/outputs folders can be found next to it.
+    """
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
+
 
 @dataclass
 class MetricTierRule:
@@ -345,7 +358,7 @@ def make_table(data, col_widths, tier_cells=None, tier_colors=None, textcolor_ce
     return t
 
 def main():
-    base = Path(__file__).resolve().parent
+    base = get_base_dir()
     cfg = load_config(base/"config.json")
     specs = build_metric_specs(cfg)
     tier_colors = cfg.get("tier_colors", {})
@@ -409,13 +422,13 @@ def main():
         elif move_dir=="down": arrow="▼"
         elif move_dir=="new": arrow="•"
         data.append([str(i+1), row["Agent"], *vals, f"{arrow} {move}"])
+        r_idx = i+1
         # Movement column text color: green for ▲, red for ▼
         if arrow == "▲":
             textcolor_cells.append((r_idx, 8, colors.green))
         elif arrow == "▼":
             textcolor_cells.append((r_idx, 8, colors.red))
         # tier shading for metrics
-        r_idx = i+1
         for j,spec in enumerate(specs):
             tier = tier_for_value(spec, row.get(spec.key))
             tier_cells.append((r_idx, 2+j, tier))
@@ -443,7 +456,7 @@ def main():
             tier=tier_for_value(spec, row.get(spec.key))
             tier_cells.append((r_idx, 1+j, tier))
     col_widths=[2.6*inch]+[1.05*inch]*6
-    story.append(make_table(data, col_widths, tier_cells=tier_cells, tier_colors=tier_colors, textcolor_cells=textcolor_cells))
+    story.append(make_table(data, col_widths, tier_cells=tier_cells, tier_colors=tier_colors))
     story.append(PageBreak())
 
     # Agent pages
