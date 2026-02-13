@@ -330,7 +330,7 @@ def tier_bg(tier: str, tier_colors: Dict[str,str]) -> colors.Color:
     if not h:
         return colors.white
     c = hex_to_color(h)
-    return colors.Color(c.red, c.green, c.blue, alpha=0.15)
+    return colors.Color(c.red, c.green, c.blue, alpha=0.40)
 
 def make_table(data, col_widths, tier_cells=None, tier_colors=None, textcolor_cells=None):
     t = Table(data, colWidths=col_widths, hAlign="LEFT")
