@@ -16,20 +16,22 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd Scorecardgenerator
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
 
       - name: Build EXE
         run: |
+          cd Scorecardgenerator
           pyinstaller --onefile --name Scorecardgenerator generate_scorecard.py
 
       - name: Create deploy folder
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path deploy | Out-Null
-          Copy-Item dist\Scorecardgenerator.exe deploy\
-          Copy-Item config.json deploy\
+          Copy-Item Scorecardgenerator\dist\Scorecardgenerator.exe deploy\
+          Copy-Item Scorecardgenerator\config.json deploy\
           New-Item -ItemType Directory -Force -Path deploy\inputs\monthly | Out-Null
           New-Item -ItemType Directory -Force -Path deploy\inputs\ytd | Out-Null
           New-Item -ItemType Directory -Force -Path deploy\outputs | Out-Null
