@@ -1,0 +1,164 @@
+{
+  "supervisor_name": "Adam Bell",
+  "campaign_filter": "Auto - Strategic",
+  "metrics": [
+    {
+      "key": "AHT",
+      "label": "AHT",
+      "type": "time",
+      "lower_is_better": true,
+      "tiers": [
+        {
+          "name": "Excelling",
+          "max": "0:11:00"
+        },
+        {
+          "name": "Performing",
+          "max": "0:13:00"
+        },
+        {
+          "name": "Approaching",
+          "max": "0:14:00"
+        },
+        {
+          "name": "Improvement Needed",
+          "max": null
+        }
+      ]
+    },
+    {
+      "key": "Avg Hold Time",
+      "label": "Avg Hold Time",
+      "type": "time",
+      "lower_is_better": true,
+      "tiers": [
+        {
+          "name": "Excelling",
+          "max": "0:01:00"
+        },
+        {
+          "name": "Performing",
+          "max": "0:03:00"
+        },
+        {
+          "name": "Approaching",
+          "max": "0:04:00"
+        },
+        {
+          "name": "Improvement Needed",
+          "max": null
+        }
+      ]
+    },
+    {
+      "key": "Schedule Adherence %",
+      "label": "Schedule Adherence %",
+      "type": "percent",
+      "lower_is_better": false,
+      "tiers": [
+        {
+          "name": "Exceptional",
+          "min": 0.95
+        },
+        {
+          "name": "Solid",
+          "min": 0.9
+        },
+        {
+          "name": "Approaching",
+          "min": 0.85
+        },
+        {
+          "name": "Improvement Needed",
+          "min": null
+        }
+      ]
+    },
+    {
+      "key": "Working Rate",
+      "label": "Working Rate %",
+      "type": "percent",
+      "lower_is_better": false,
+      "tiers": [
+        {
+          "name": "Exceptional",
+          "min": 0.8
+        },
+        {
+          "name": "Solid",
+          "min": 0.75
+        },
+        {
+          "name": "Approaching",
+          "min": 0.7
+        },
+        {
+          "name": "Improvement Needed",
+          "min": null
+        }
+      ]
+    },
+    {
+      "key": "QA Score",
+      "label": "QA Score %",
+      "type": "percent",
+      "lower_is_better": false,
+      "tiers": [
+        {
+          "name": "Exceptional",
+          "min": 0.95
+        },
+        {
+          "name": "Solid",
+          "min": 0.9
+        },
+        {
+          "name": "Approaching",
+          "min": 0.85
+        },
+        {
+          "name": "Improvement Needed",
+          "min": null
+        }
+      ]
+    },
+    {
+      "key": "Claims Audit Score",
+      "label": "Claims Audit %",
+      "type": "percent",
+      "lower_is_better": false,
+      "tiers": [
+        {
+          "name": "Exceptional",
+          "min": 0.95
+        },
+        {
+          "name": "Solid",
+          "min": 0.9
+        },
+        {
+          "name": "Approaching",
+          "min": 0.85
+        },
+        {
+          "name": "Improvement Needed",
+          "min": null
+        }
+      ]
+    }
+  ],
+  "tier_colors": {
+    "Exceptional": "#1B5E20",
+    "Excelling": "#1B5E20",
+    "Solid": "#FFEE58",
+    "Performing": "#FFEE58",
+    "Approaching": "#FF6D00",
+    "Improvement Needed": "#C62828"
+  },
+  "page": {
+    "title": "Monthly Scorecard",
+    "paper": "LETTER",
+    "orientation": "LANDSCAPE",
+    "margin_in": 0.5
+  }
+}
